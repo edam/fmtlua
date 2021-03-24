@@ -31,10 +31,10 @@ def _process_commandline():
 
 		# check for something to do
 		if len(the.files) == 0:
-			raise RuntimeError("no input files")
+			raise the.FatalError( "no input files" )
 
 	except getopt.error as e:
-		raise RuntimeError(str(e)) from None
+		raise the.FatalError(str(e)) from None
 
 
 def _print_help():
@@ -53,10 +53,10 @@ def _print_help():
 # --
 
 def run():
-	# try:
+	try:
 		_process_commandline()
 		for file in the.files:
 			Process(file).run()
-	# except Exception as e:
-	# 	print( f"{the.app}: {str(e)}", file=sys.stderr )
-	# 	exit(1)
+	except the.FatalError as e:
+		print( f"{the.app}: {str(e)}", file=sys.stderr )
+		exit(1)
